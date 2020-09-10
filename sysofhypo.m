@@ -55,32 +55,65 @@ function sysofhypo
 
 
 %-------------------2d lin eq one side method reachable set---------------%
-%     deltat = 0.1;
-%     deltax = 1;
-%     alpha = 0.5;
-%     xrange = 10;
-%     time = 51;    
-%     xlist = linspace(0, xrange, 11);
+
+
+
+
+
+
+%     time = 5/deltat + 1;
+%     numofmesh = xrange/deltax + 1;
+%     xlist = linspace(0, xrange, numofmesh);
 %     tlist = linspace(0, 5, time);
 %     bdcnd = 'Dirichlet';
-%     init_min = [0, 0.2, 0.2, 0.4, 0.5, 0, 0, 1, 1, 0.9, 0];    
-%     init_max = [0, 0.4, 0.4, 0.5, 0.6, 0.1, 0.1, 1.2, 1.2, 1, 0];
+%     
+%     
+%     init_min = zeros(1, numofmesh);
+%     init_min(1 , 1: numofmesh/4) = 0.5;    
+%       
+%     init_max = zeros(1, numofmesh);
+%     init_max(1, 1: numofmesh/4 ) = 1;   
+
+
+
+
+
+
+
+%     deltat = 0.01;
+%     deltax = 0.01;
+%     alpha = 0.5;
+%     xrange = 10;
+%     time = 5/deltat + 1;
+%     numofmesh = xrange/deltax + 1;   
+%     xlist = linspace(0, xrange, numofmesh);
+%     tlist = linspace(0, 5, time);
+%     bdcnd = 'Dirichlet';
+%     
+%     
+%     init_min = zeros(1, numofmesh);
+%     init_min(1 , 1: numofmesh/5) = 0.5;    
+%       
+%     init_max = zeros(1, numofmesh);
+%     init_max(1, 1: numofmesh/5 ) = 1;  
+%     
+%     
 %     [sol_min, sol_max] = reach_linhypo(alpha, deltat, deltax, init_min, init_max, time, xlist, tlist, bdcnd);
 
 % %----------------------------one side method 3dbox reachable set ------------------------------------
 % 
-%   this is correct 
+%  this is correct 
 %     deltat = 0.1;
 %     deltax = 1;
 %     alpha = 0.5;
 %     xrange = 10;
 %     time = 81;    
-%     xlist = linspace(0, xrange, 41);
+%     xlist = linspace(0, xrange, 11);
 %     tlist = linspace(0, 8, time);
 %     bdcnd = 'Robin';
-%     init_min = [0, 0.2, 0.2, 0.4, 0.5, 0, 0, 1, 1, 0.9];    
-%     init_max = [0, 0.4, 0.4, 0.5, 0.6, 0.1, 0.1, 1.2, 1.2, 1];
-%     tic
+%     init_min = [0, 0, 0.5, 0.5, 0.5, 0.5, 0, 0, 0, 0, 0];
+%     init_max = [0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0];
+% %     tic
 %     reach_3dlinhypo(alpha, deltat, deltax, xlist, tlist, init_min, init_max, time, bdcnd);
 %     toc
 %------------------------lin eq lax-frdch method reachable set-------------
@@ -164,8 +197,8 @@ function sysofhypo
 %     xlist = linspace(0, xrange, 11);
 %     tlist = linspace(0, 6, time);    
 %     bdcnd = 'Dirichlet';
-%     init_min = [0, 0.2, 0.2, 0.4, 0.5, 0, 0, 1, 1, 0.9, 0];  
-%     init_max = [0, 0.2, 1.2, 0.4, 1.5, 0, 0, 1.2, 1.2, 1.9, 0]; 
+%     init_min = [0, 0, 0, 0, 0.5, 0.5, 0.5, 0.5, 0.5, 0, 0];    
+%     init_max = [0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0];
 %     [sol_min, sol_max] = reach_nonlnhypo(deltat, deltax, init_min, init_max, time, xlist, tlist, bdcnd);
     
 %-------------------nonlin eq lax-wdf method min_function-------------------------------------------------    
@@ -191,18 +224,31 @@ function sysofhypo
 %     [list, umax] = max_nonlnhypo(u_min, u_max, deltat, deltax, xlist)
 
 %----------------------------nonlin eq lax-wdf method method 2d and 3dbox plot------------------------------------   
- 
+%  
+
+
+
+
+% 
 %     deltat = 0.1;
 %     deltax = 1;    
 %     xrange = 10;
-%     time = 51;    
-%     xlist = linspace(0, xrange, 11);
+%     time = 5/deltat + 1;
+%     numofmesh = xrange/deltax + 1;
+%     xlist = linspace(0, xrange, numofmesh);
 %     tlist = linspace(0, 5, time);
-%     bdcnd = 'Neumann';
-%     init_min = [0, 0.8, 0.8, 0.4, 0, 0, 0, 0, 0, 0, 0];    
-%     init_max = [0, 1, 1, 0.5, 0, 0, 0, 0, 0, 0, 0];
+%     bdcnd = 'Dirichlet';
+%     
+%     
+%     init_min = zeros(1, numofmesh);
+%     init_min(1 , 1: numofmesh/4) = 0.5;    
+%       
+%     init_max = zeros(1, numofmesh);
+%     init_max(1, 1: numofmesh/4 ) = 1;   
+%     
+%     
 %     reach_3dnonlinhypo(deltat, deltax, xlist, tlist, init_min, init_max, time, bdcnd);
-    
+%     
 
 %-------------------------solve euler equations using lax-wendroff method-----------------------------------
   
@@ -226,7 +272,6 @@ function sysofhypo
 
 %-------------------------1d euler equations reachable set-----------------------------------
 
-%     ???
 %     deltat = 0.1;
 %     deltax = 1;    
 %     xrange = 10;
@@ -331,7 +376,7 @@ function sysofhypo
 %     toc
 
 
-%-------------------------solve heat eq using gminres subspace------------------------------------------- 
+%-------------------------solve heat eq using tradiagonal method------------------------------------------- 
 
 %     deltat = 0.05;
 %     deltax = 0.01;    
@@ -343,28 +388,283 @@ function sysofhypo
 %     init = zeros(101,1);
 %     init(20:60) = 1;
 % 
-%     sol = solve_implicit(deltat, deltax, init, time, xlist, tlist);
+%     sol = solve_implicit_tradiagonal(deltat, deltax, init, time, xlist, tlist);
     
-%-------------------------reach heat eq using gminres subspace------------------------------------------- 
+%-------------------------reach 1d heat eq using gminres and tradiagonal method------------------------------------------- 
 
-    deltat = 0.05;
-    deltax = 0.01;    
-    xrange = 1;
-    trange = 5;
-    time = 101;    
-    xlist = linspace(0, xrange, 101);
-    tlist = linspace(0, trange, time);     
-    init_min = zeros(101,1);
-        
-    init_min(20:60) = 0.8;
-    lambda_min = 0.4;
-    lambda_max = 1.2;
+    deltat = 0.1;
+    deltax = 0.01/8;    
     
-    init_max = zeros(101,1);
+%     xrange = 10;
+    xrange = 9;
+    
+    trange = 10;
+    time = trange/deltat + 1;
+    space = xrange/deltax + 1;
+    
+    xlist = linspace(0, xrange, xrange/deltax + 1);
+    tlist = linspace(0, trange, trange/deltat + 1);     
+    init_min = zeros(space,1);
+        
+    init_min(20:60) = 0.5;
+    lambda_min = 0.1;
+    lambda_max = 0.2;
+    
+    init_max = zeros(space,1);
     
     init_max(20:60) = 1;  
     
-    sol = reach_implicit_krylov(deltat, deltax, init_min, init_max, lambda_min, lambda_max, time, xlist, tlist);    
+    reach_implicit_1d(deltat, deltax, init_min, init_max, lambda_min, lambda_max, time, xlist, tlist);    
+
+%-------------------------solve 2d heat eq using CN and gminres ------------------------------------------- 
+
+%     deltat = 0.1;
+%     deltax = 0.25;  
+%     deltay = 0.25;
+%     xrange = 10;
+%     yrange = 10;    
+%     trange = 10;
+%     alpha = 0.5;
+%     nummesh = xrange/deltax + 1;    
+%     time = trange/deltat;    
+%     xlist = linspace(0, xrange, nummesh);
+%     ylist = linspace(0, yrange, nummesh);    
+%     tlist = linspace(0, trange, time);   
+%     init = zeros(nummesh*nummesh, 1);
+%         
+%     for i = 1 : nummesh
+%         for j = 1 : nummesh
+%             
+%             if(i >= nummesh/4 && i <= nummesh/4*3 && ...
+%                 j >= nummesh/4 && j <= nummesh/4*3)
+%             
+%                 init((i - 1) * nummesh + j) = 1;
+%             else
+%                 init((i - 1) * nummesh + j) = 0;
+%             end
+%         end
+%     end
+%     
+%     lambda = 0.2;    
+%     sol = solve_CN(deltat, deltax, deltay, lambda, alpha, init, time, xlist, ylist, tlist);   
+    
+%-------------------------reach 2d heat eq using CN and gminres ------------------------------------------- 
+
+%     deltat = 0.1;
+%     deltax = 0.2;  
+%     deltay = 0.2;
+%     xrange = 10;
+%     yrange = 10;    
+%     trange = 10;
+%     alpha = 0.5;
+%     time = trange/deltat; 
+%     nummesh = xrange/deltax + 1;
+%     xlist = linspace(0, xrange, nummesh);
+%     ylist = linspace(0, yrange, nummesh);    
+%     tlist = linspace(0, trange, time);   
+%     
+%     
+%     
+%     init_min = zeros(nummesh * nummesh, 1);
+%         
+%     for i = 1 : nummesh
+%         for j = 1 : nummesh
+%             
+%             if(i >= nummesh/4 && i <= nummesh/4*3 && ...
+%                 j >= nummesh/4 && j <= nummesh/4*3)
+%             
+%                 init_min((i - 1) * nummesh + j) = 1;
+%             else
+%                 init_min((i - 1) * nummesh + j) = 0;
+%             end
+%         end
+%     end
+% 
+%     
+%     
+%     
+%     init_max = zeros(nummesh * nummesh, 1);
+%         
+%     for i = 1 : nummesh
+%         for j = 1 : nummesh
+%             
+%             if(i >= nummesh/4 && i <= nummesh/4*3 && ...
+%                 j >= nummesh/4 && j <= nummesh/4*3)
+%             
+%                 init_max((i - 1) * nummesh + j) = 1.5;
+%             else
+%                 init_max((i - 1) * nummesh + j) = 0.5;
+%             end
+%         end
+%     end
+%     
+%     lambda_min = 0.1;  
+%     lambda_max = 0.2; 
+%     
+%     reach_3d_CN_2dheat(deltat, deltax, deltay, lambda_min, lambda_max, alpha, init_min, init_max, time, xlist, ylist, tlist);
+
+%-------------------------solve 2d heat eq using ADI, tridiagonal ------------------------------------------- 
+
+%     deltat = 0.1;
+%     deltax = 0.2;  
+%     deltay = 0.2;
+%     xrange = 10;
+%     yrange = 10;    
+%     trange = 10;
+%     alpha = 0.5;
+%     time = trange/deltat; 
+%     nummesh = xrange/deltax + 1;
+%     xlist = linspace(0, xrange, nummesh);
+%     ylist = linspace(0, yrange, nummesh);    
+%     tlist = linspace(0, trange, time);   
+%     
+%     
+%     
+%     init = zeros(nummesh * nummesh, 1);
+%         
+%     for i = 1 : nummesh
+%         for j = 1 : nummesh
+%             
+%             if(i >= nummesh/4 && i <= nummesh/4*3 && ...
+%                 j >= nummesh/4 && j <= nummesh/4*3)
+%             
+%                 init((i - 1) * nummesh + j) = 1.5;
+%             else
+%                 init((i - 1) * nummesh + j) = 0.5;
+%             end
+%         end
+%     end
+% 
+%     
+%     
+%     
+%     lambda = 0.15;
+%     
+%     solve_peaceman(alpha, deltat, deltax, deltay, lambda, init, time, xlist, ylist, tlist);
+
+%-------------------------test block tridiagonal -------------------------------------------
+
+%     b = 2*ones(1,9);
+%     b(1) = 0;
+%     b(2) = 0;
+%     b(3) = 0;    
+%     a = ones(1,9);
+%     c = 3*ones(1,9);
+%     c(7) = 0;
+%     c(8) = 0;
+%     c(9) = 0;     
+%     f = 10*rand(9, 1);
+%     y = block_tridiag(a, b, c, 3, f);
+%     
+%     
+%     
+%     
+%     A = diag(ones(1, 9)) + diag(3 * ones(1, 6), 3) + diag(2*ones(1, 6), -3); 
+%     disp(A);
+%     z = A\f;
+%     disp(y);
+%     disp(z);    
+%     disp(y - z);
+%     
+
+%-------------------------reach 2d heat eq using ADI ------------------------------------------- 
+
+%     deltat = 0.1;
+%     deltax = 0.2;  
+%     deltay = 0.2;
+%     xrange = 10;
+%     yrange = 10;    
+%     trange = 10;
+%     alpha = 0.5;
+%     time = trange/deltat; 
+%     nummesh = xrange/deltax + 1;
+%     xlist = linspace(0, xrange, nummesh);
+%     ylist = linspace(0, yrange, nummesh);    
+%     tlist = linspace(0, trange, time);   
+%     
+%     
+%     
+%     init_min = zeros(nummesh * nummesh, 1);
+%         
+%     for i = 1 : nummesh
+%         for j = 1 : nummesh
+%             
+%             if(i >= nummesh/4 && i <= nummesh/4*3 && ...
+%                 j >= nummesh/4 && j <= nummesh/4*3)
+%             
+%                 init_min((i - 1) * nummesh + j) = 1;
+%             else
+%                 init_min((i - 1) * nummesh + j) = 0;
+%             end
+%         end
+%     end
+% 
+%     
+%     
+%     
+%     init_max = zeros(nummesh * nummesh, 1);
+%         
+%     for i = 1 : nummesh
+%         for j = 1 : nummesh
+%             
+%             if(i >= nummesh/4 && i <= nummesh/4*3 && ...
+%                 j >= nummesh/4 && j <= nummesh/4*3)
+%             
+%                 init_max((i - 1) * nummesh + j) = 1.5;
+%             else
+%                 init_max((i - 1) * nummesh + j) = 0.5;
+%             end
+%         end
+%     end
+%     
+%     lambda_min = 0.1;  
+%     lambda_max = 0.2; 
+%     
+%     reach_3d_ADI_2dheat(deltat, deltax, deltay, lambda_min, lambda_max, alpha, init_min, init_max, time, xlist, ylist, tlist);
+    
+%-------------------------solve 1d heat eq using ASC-N------------------------------------------- 
+
+%     deltat = 0.1;
+%     deltax = 0.1;   
+%     alpha = 0.5;
+%     xrange = 10;
+%     trange = 10;    
+%     time = trange/deltat + 1;    
+%     xlist = linspace(0, xrange, xrange/deltax);
+%     tlist = linspace(0, trange, time);     
+%     init = zeros(xrange/deltax, 1);
+%     lambda = 0.15;
+%     init(35:70) = 1;
+% 
+%     sol = solve_ASCN(deltat, deltax, alpha, init, time, xlist, tlist, lambda);    
+    
+%-------------------------reach 1d heat eq using ASC-N-------------------------------------------
+
+%     deltat = 0.1;
+%     deltax = 0.01/8;   
+%     alpha = 0.5;
+%     
+% %     xrange = 10;
+% 
+%     xrange = 9; %900 points
+%     trange = 10;    
+%     time = trange/deltat + 1;    
+%     xlist = linspace(deltax, xrange, xrange/deltax);        %100 points in stead of 101
+%     tlist = linspace(0, trange, time);  
+%     lambda_min = 0.1;
+%     lambda_max = 0.15;   
+%     
+%     init_min = zeros(xrange/deltax, 1);
+%     init_max = zeros(xrange/deltax, 1);
+%     
+%     init_min(35:70) = 0.5;
+%     init_max(35:70) = 1;
+%     
+%     
+%     reach_3d_ASCN_1dheat(deltat, deltax, lambda_min, lambda_max, alpha, init_min, init_max, time, xlist, tlist)
+
+
+
 end
     
     
