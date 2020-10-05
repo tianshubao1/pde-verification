@@ -6,7 +6,7 @@ Tested on Windows 10
 
 Tool installation
 
-0) Step 0: clone tool from github: git clone https://github.com/trhoangdung/pdev.git
+0) Step 0: clone tool from github: git clone https://github.com/tianshubao1/pde-verification.git
 
 1) Step 1: install scipy, numpy, sympy and matplotlib
    command: sudo pip install scipy numpy sympy matplotlib
