@@ -1,12 +1,10 @@
-function [maxlist, fmax] = max_nonlnhypo(u_min, u_max, deltat, deltax, xlist)
-    %must consider boundary condition
-    
-    
+function [minlist, fmin] = min_nonlnhypo(u_min, u_max, deltat, deltax, xlist)
+
     dx = deltax;
     dt = deltat;
     mesh = size(xlist);
     m = mesh(2);     
-    maxlist = zeros(1,m);   
+    minlist = zeros(1,m);
     
     function f = fun(x) %flux function
         f = x * x;
@@ -37,56 +35,70 @@ function [maxlist, fmax] = max_nonlnhypo(u_min, u_max, deltat, deltax, xlist)
         tgt_new = k2 - dt/dx * (fun(u_1) - fun(u_2));     %f(u_i+1/2)-f(u_i-1/2)    
         
         tgt = tgt_new + tgt;
-    end    
-    
-    tgt = -tgt;    
+    end        
+        
     ht = matlabFunction(tgt,'vars',{u});
     x0 = (u_min + u_max)/2;
     lb = u_min;
     ub = u_max;
 
     [list, fmin] = fmincon(ht, x0,[],[],[],[], lb, ub);
-    fmax = -fmin;
+    
     
     for j = 2 : m - 1   %calculate value for next step
         
-        maxlist(1) = 0;
-        maxlist(m) = 0;
+        minlist(1) = 0;
+        minlist(m) = 0;
         
         k1 = list(j - 1);
         k2 = list(j);        
         k3 = list(j + 1);
 
+        
+
         u_1 = (k3 + k2)/2 - dt/(2 * dx) * (fun(k3) - fun(k2));  %u_+1/2
         u_2 = (k2 + k1)/2 - dt/(2 * dx) * (fun(k2) - fun(k1));  %u_-1/2
 
-        maxlist(j) = k2 - dt/dx * (fun(u_1) - fun(u_2));     %f(u_i+1/2)-f(u_i-1/2)    
+        minlist(j) = k2 - dt/dx * (fun(u_1) - fun(u_2));     %f(u_i+1/2)-f(u_i-1/2)    
         
     end        
     
-% dx = deltax;
-% dt = deltat;
+    
+    
+    
+    
+% %             u_min_new(j) = min_nonlnhypo(0, u_min(j), u_min(j + 1), 0, u_max(j), u_max(j + 1), deltat, deltax);
+% %             u_max_new(j) = max_nonlnhypo(0, u_min(j), u_min(j + 1), 0, u_max(j), u_max(j + 1), deltat, deltax);          
+%             
+% %         elseif j == m   %right boundary
 % 
-%     function tgt = target(x)
+% %             u_min_new(j) = min_nonlnhypo(u_min(j - 1), u_min(j), 0, u_max(j - 1), u_max(j), 0, deltat, deltax);
+% %             u_max_new(j) = max_nonlnhypo(u_min(j - 1), u_min(j), 0, u_max(j - 1), u_max(j), 0, deltat, deltax);
+%             
+% 
 %         
-%         function f = fun(x) %flux function
-%             f = x * x;
-%         end
-%         
-%         u_1 = (x(3) + x(2))/2 - dt/(2 * dx) * (fun(x(3)) - fun(x(2)));  %u_+1/2
-%         u_2 = (x(2) + x(1))/2 - dt/(2 * dx) * (fun(x(2)) - fun(x(1)));  %u_-1/2
-% 
-%         tgt = x(2) - dt/dx * (fun(u_1) - fun(u_2));     %f(u_i+1/2)-f(u_i-1/2)
-%         tgt = -tgt;
-%     end
-% 
-% 
+%         else    %in the middle
+%             x_j
+%             tgt = tgt .* @loc;            
+% %             u_min_new(j) = min_nonlnhypo(u_min(j - 1), u_min(j), u_min(j + 1), u_max(j - 1), u_max(j), u_max(j + 1), deltat, deltax);
+% %             u_max_new(j) = max_nonlnhypo(u_min(j - 1), u_min(j), u_min(j + 1), u_max(j - 1), u_max(j), u_max(j + 1), deltat, deltax);
+% %         end        
+%     
+    
+
+
 % x0 = [(x_min + x_max)/2, (y_min + y_max)/2, (z_min + z_max)/2];
 % lb = [x_min, y_min, z_min];
 % ub = [x_max, y_max, z_max];
+
+% ht = matlabFunction(tgt);
+% x0 = (u_min + u_max)/2;
+% lb = u_min;
+% ub = u_max;
 % 
-% [~, fmin] = fmincon(@target,x0,[],[],[],[],lb,ub);
-% fmax = -fmin;
+% [~, fmin] = fmincon(ht, x0,[],[],[],[], lb, ub);
+% disp('min is');
+% disp(fmin);
 
 
 end
