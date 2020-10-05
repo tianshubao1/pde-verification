@@ -1,4 +1,4 @@
-function sysofhypo
+function examples
 %     deltat = 0.1;
 %     deltax = 1;    
 %     xrange = 10;
