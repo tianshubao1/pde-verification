@@ -365,11 +365,11 @@ function sol = solve_ASCN(deltat, deltax, alpha, init, time, xlist, tlist, lambd
     toc
     delete(pool);
     
-    figure;
-    surf(xlist,tlist,sol'); 
-    title('ASC-N Numerical solution')
-    xlabel('Distance x')
-    ylabel('Time t')
+%     figure;
+%     surf(xlist,tlist,sol'); 
+%     title('ASC-N Numerical solution')
+%     xlabel('Distance x')
+%     ylabel('Time t')
     
     
 end

@@ -7,12 +7,12 @@ function [maxlist, fmax] = max_nonlnhypo_local(u_min, u_max, deltat, deltax, xli
     maxlist = zeros(1,m);   
     
     function f = fun(x) %flux function
-        f = x * x;
+        f = 1/2 * x * x;
     end 
 
     tgt = 0;
     
-    maxlist(1) = 0;
+    maxlist(1) = 0; %boundary is 0
     maxlist(m) = 0;      
     for j = 2 : m - 1
         
@@ -34,10 +34,10 @@ function [maxlist, fmax] = max_nonlnhypo_local(u_min, u_max, deltat, deltax, xli
         
         tgt = -tgt;    
         ht = matlabFunction(tgt,'vars',{u});
-        x0 = [u_min(j - 1), u_min(j), u_min(j + 1)];
+        
         lb = [u_min(j - 1), u_min(j), u_min(j + 1)];
         ub = [u_max(j - 1), u_max(j), u_max(j + 1)];  
-
+        x0 = (lb + ub)/2;
         [list, fmin] = fmincon(ht, x0,[],[],[],[], lb, ub);
         fmax = -fmin;
         maxlist(j) = fmax;

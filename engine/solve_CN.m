@@ -124,7 +124,7 @@ function sol_print = solve_CN(deltat, deltax, deltay, lambda, alpha, init, time,
         u_curr = Q2 * u + f;   
         [u, ~, relres] = gmres(Q1, u_curr, 10, 0.001);
         
-        for j = 1 : m      
+        for j = 1 : m      % bloat
             
             
             if operator == "min"
@@ -140,7 +140,7 @@ function sol_print = solve_CN(deltat, deltax, deltay, lambda, alpha, init, time,
 
     end
     
-    sol9 = sol(:,91); %deltat = 0.1
+    sol9 = sol(:,91); %deltat = 0.1, t = 9s
     
     sol_print = zeros(m2, m1);      %m2 index for y, number of rows, m1 index for x, number of column
     

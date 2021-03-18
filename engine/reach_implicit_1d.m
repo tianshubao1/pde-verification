@@ -13,7 +13,7 @@ function [sol_min, sol_max] = reach_implicit_1d(deltat, deltax, init_min, init_m
     sol_min(:,1) = init_min;
     sol_max(:,1) = init_max;
         
-    r = deltat/(deltax*deltax);
+    r = deltat/(deltax*deltax);     %alpha = 1
     A = zeros(m, m);
     
     for i = 1 : m
@@ -43,7 +43,7 @@ function [sol_min, sol_max] = reach_implicit_1d(deltat, deltax, init_min, init_m
     b(m, 1) = -2*r;
     c = ones(m, 1) * (-r);
     
-    for i = 2 : time
+    for i = 2 : time    % max value
         
         u_min = u_min *(1 + lambda_min * deltat);
         
@@ -53,8 +53,7 @@ function [sol_min, sol_max] = reach_implicit_1d(deltat, deltax, init_min, init_m
         
         for j = 1 : m
             
-            temp(j) = temp(j) - relres * abs(u_min(j));
-            %temp(j) = min(temp_thomas_min(j), temp(j));
+            temp(j) = temp(j) - relres * abs(u_min(j)); %   bloating
             
         end
         
@@ -64,7 +63,7 @@ function [sol_min, sol_max] = reach_implicit_1d(deltat, deltax, init_min, init_m
 
     end
         
-    for i = 2 : time
+    for i = 2 : time     % max value
         
         u_max = u_max *(1 + lambda_max * deltat);  
         
@@ -73,8 +72,7 @@ function [sol_min, sol_max] = reach_implicit_1d(deltat, deltax, init_min, init_m
         %temp_thomas_max = tridiag(a, b, c, u_max);
         
         for j = 1 : m
-            temp(j) = temp(j) + relres * abs(u_max(j));
-            %temp(j) = max(temp_thomas_max(j), temp(j));
+            temp(j) = temp(j) + relres * abs(u_max(j));     %   bloating
         end
         
         u_max = temp;
@@ -83,18 +81,21 @@ function [sol_min, sol_max] = reach_implicit_1d(deltat, deltax, init_min, init_m
     end        
     toc;
     
-    figure;
-    surf(xlist,tlist,sol_min') 
-    title('Minimum Numerical solution')
-    xlabel('Distance x')
-    ylabel('Time t')
-
-    figure;
-    surf(xlist,tlist,sol_max') 
-    title('Maximum Numerical solution')
-    xlabel('Distance x')
-    ylabel('Time t')
+    plot_2dbox(sol_min(:,4/deltat + 1), sol_max(:,4/deltat + 1), deltax, xlist);   
+    axis([-1 11 0 inf])
+%     
+%     figure;
+%     surf(xlist,tlist,sol_min') 
+%     title('Minimum Numerical solution')
+%     xlabel('Distance x')
+%     ylabel('Time t')
+% 
+%     figure;
+%     surf(xlist,tlist,sol_max') 
+%     title('Maximum Numerical solution')
+%     xlabel('Distance x')
+%     ylabel('Time t')
     
-    plot_3dbox(sol_min', sol_max', deltax, deltat, xlist, tlist);
+%     plot_3dbox(sol_min', sol_max', deltax, deltat, xlist, tlist);
 end
     
