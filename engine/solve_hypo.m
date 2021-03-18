@@ -93,11 +93,11 @@ function sol = solve_hypo(alpha, deltat, deltax, init, time, xlist, tlist, bdcnd
     
     
     
-    figure;
-    surf(xlist,tlist,sol') 
-    title('Numerical solution')
-    xlabel('Distance x')
-    ylabel('Time t')
+%     figure;
+%     surf(xlist,tlist,sol') 
+%     title('Numerical solution')
+%     xlabel('Distance x')
+%     ylabel('Time t')
 
 
 end

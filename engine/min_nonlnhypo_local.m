@@ -1,4 +1,4 @@
-function [minlist, fmin] = min_nonlnhypo_local(u_min, u_max, deltat, deltax, xlist)
+function minlist = min_nonlnhypo_local(u_min, u_max, deltat, deltax, xlist)
 
     dx = deltax;
     dt = deltat;
@@ -6,12 +6,12 @@ function [minlist, fmin] = min_nonlnhypo_local(u_min, u_max, deltat, deltax, xli
     m = mesh(2);     
     minlist = zeros(1,m);
     function f = fun(x) %flux function
-        f = x * x;
+        f = 1/2 * x * x;
     end 
 
     tgt = 0;
 
-    minlist(1) = 0;
+    minlist(1) = 0; %boundary is 0
     minlist(m) = 0;
     
     for j = 2 : m - 1
@@ -33,9 +33,10 @@ function [minlist, fmin] = min_nonlnhypo_local(u_min, u_max, deltat, deltax, xli
         tgt = k2 - dt/dx * (fun(u_1) - fun(u_2));
         
         ht = matlabFunction(tgt,'vars',{u});        
-        x0 = [u_min(j - 1), u_min(j), u_min(j + 1)];
+        %x0 = [u_min(j - 1), u_min(j), u_min(j + 1)];
         lb = [u_min(j - 1), u_min(j), u_min(j + 1)];
-        ub = [u_max(j - 1), u_max(j), u_max(j + 1)];        
+        ub = [u_max(j - 1), u_max(j), u_max(j + 1)];
+        x0 = (lb + ub)/2;
         [list, fmin] = fmincon(ht, x0,[],[],[],[], lb, ub);
         minlist(j) = fmin;
         

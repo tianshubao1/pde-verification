@@ -6,7 +6,7 @@ sol_min = zeros(length(xlist),length(tlist));
 sol_max = zeros(length(xlist),length(tlist));
 
 size(sol_min);
-sol_min(:,1) = init_min;
+sol_min(:,1) = init_min; %auto adjusting, 行列不重要
 sol_max(:,1) = init_max;
 
 mesh = size(xlist);
@@ -21,34 +21,34 @@ u_max_new = zeros(size(init_min));
     end
 
 
-sol_min = solve_nonlnhypo(deltat, deltax, init_min, time, xlist, tlist, bdcnd);
-sol_max = solve_nonlnhypo(deltat, deltax, init_max, time, xlist, tlist, bdcnd);
+% sol_min = solve_nonlnhypo(deltat, deltax, init_min, time, xlist, tlist, bdcnd);
+% sol_max = solve_nonlnhypo(deltat, deltax, init_max, time, xlist, tlist, bdcnd);
 
 
 for i = 1 : time - 1    
 
-    u_min_new = min_nonlnhypo(u_min, u_max, deltat, deltax, xlist);
+    u_min_new = min_nonlnhypo_local(u_min, u_max, deltat, deltax, xlist);
     
     if strcmp(bdcnd,'Dirichlet')    
         u_min_new(1) = 0;
         u_min_new(m) = 0;
     end    
-    u_max_new = max_nonlnhypo(u_min, u_max, deltat, deltax, xlist);
+    u_max_new = max_nonlnhypo_local(u_min, u_max, deltat, deltax, xlist);
     
     if strcmp(bdcnd,'Dirichlet')    
         u_max_new(1) = 0;
         u_max_new(m) = 0;
     end
     
-    for j = 2 : m - 1       %for the purpose of soundness, adding max and min value at each step
-        if u_min_new(j) > sol_min(j, i + 1)
-            u_min_new(j) = sol_min(j, i + 1);
-        end
-        
-        if u_max_new(j) < sol_max(j, i + 1)
-            u_max_new(j) = sol_max(j, i + 1);
-        end
-    end
+%     for j = 2 : m - 1       %for the purpose of soundness, adding max and min value at each step
+%         if u_min_new(j) > sol_min(j, i + 1)
+%             u_min_new(j) = sol_min(j, i + 1);
+%         end
+%         
+%         if u_max_new(j) < sol_max(j, i + 1)
+%             u_max_new(j) = sol_max(j, i + 1);
+%         end
+%     end
     
     sol_min(:,i + 1) = u_min_new;
     sol_max(:,i + 1) = u_max_new;
@@ -66,7 +66,7 @@ end
 % sol_sample3 = solve_nonlnhypo(deltat, deltax, (init_max - init_min)/3 * 2 + init_min, time, xlist, tlist, bdcnd);
 
 
-plot_2dboxbald(sol_min(:,4/deltat + 1)', sol_max(:,4/deltat + 1)', deltax, xlist, 0);
+plot_2dboxbald(sol_min(:,4/deltat + 1)', sol_max(:,4/deltat + 1)', deltax, xlist, 0); % plot t = 4s
 
 % hold on;
 % rectangle('Position',[2   0.5  2.3  0.5], 'FaceColor',[0 0 1], 'EdgeColor',[0 0 1]); 
@@ -97,15 +97,15 @@ plot_2dboxbald(sol_min(:,4/deltat + 1)', sol_max(:,4/deltat + 1)', deltax, xlist
 %     plot_fixlocbox(sol_min(5, :)', sol_max(5, :)', deltat, tlist);
 %     
     
-figure;
-surf(xlist,tlist,sol_min') 
-title('Numerical solution for min value')
-xlabel('Distance x')
-ylabel('Time t')
-
-figure;
-surf(xlist,tlist,sol_max') 
-title('Numerical solution for max value')
-xlabel('Distance x')
-ylabel('Time t')
+% figure;
+% surf(xlist,tlist,sol_min') 
+% title('Numerical solution for min value')
+% xlabel('Distance x')
+% ylabel('Time t')
+% 
+% figure;
+% surf(xlist,tlist,sol_max') 
+% title('Numerical solution for max value')
+% xlabel('Distance x')
+% ylabel('Time t')
 end

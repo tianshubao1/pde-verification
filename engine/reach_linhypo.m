@@ -7,7 +7,11 @@ function [sol_min, sol_max] = reach_linhypo(alpha, deltat, deltax, init_min, ini
     
     
 %--------annotation for linear eq at t = 4s------------------%  
-    plot_2dboxbald(sol_min(:,4/deltat + 1), sol_max(:,4/deltat + 1), deltax, xlist, 0.5);    
+    plot_2dboxbald(sol_min(:,4/deltat + 1), sol_max(:,4/deltat + 1), deltax, xlist, 0);   
+    hold on;
+    rectangle('Position',[2   0.5  4  0.5]); 
+%     t = text(4, 0.73,'Unsafe region');
+    hold on;
     
     
 %--------annotation for linear eq------------------%    
@@ -15,17 +19,17 @@ function [sol_min, sol_max] = reach_linhypo(alpha, deltat, deltax, init_min, ini
 %     y = [0.46,0.39];
 %     a = annotation('textarrow',x,y,'String','Single traces');
 % --------------plot safe region for lin eq--------------------------------% 
-    safe_line = 1.0*ones(15,1);
-    hold on;
-    ylim([0 1.1])
-    t = text(4, 1.05,'Unsafe region');
-    t.Color = [1 0 0];
-    plot(linspace(-2, 12, 15), safe_line, '--r'); 
+%     safe_line = 1.0*ones(15,1);
+%     hold on;
+%     ylim([0 1.1])
+%     t = text(4, 1.05,'Unsafe region');
+%     t.Color = [1 0 0];
+%     plot(linspace(-2, 12, 15), safe_line, '--r'); 
     
 % --------------plot unsafe region ------------------------%     
-    plot_fixlocbox(sol_min(5, :), sol_max(5, :), deltat, tlist);
-    hold on;
-    rectangle('Position',[4   0.75  0.5  0.2], 'FaceColor',[1 0 0], 'EdgeColor',[1 0 0]); 
-    t = text(4, 0.73,'Unsafe region');
-    hold;
+%     plot_fixlocbox(sol_min(5, :), sol_max(5, :), deltat, tlist);
+%     hold on;
+%     rectangle('Position',[4   0.75  0.5  0.2], 'FaceColor',[1 0 0], 'EdgeColor',[1 0 0]); 
+%     t = text(4, 0.73,'Unsafe region');
+%     hold;
 end
