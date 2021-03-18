@@ -6,7 +6,9 @@ function plot_2dboxbald(min_list, max_list, deltax, xlist, bloat)
     xlabel('Distance x')
     ylabel('u(x,4)')
     
+    color = [0 0.5 0.5];
 
+    
     for i = 1 : m 
         if i == 1
             v1 = (0 + min_list(i))/2;
@@ -18,7 +20,7 @@ function plot_2dboxbald(min_list, max_list, deltax, xlist, bloat)
             arr = [v1,v2,v3,v4,v5,v6];
             lb = min(arr)*(1 - bloat);
             ub = max(arr)*(1 + bloat);
-            rectangle('Position',[xlist(i)-deltax/2   lb  deltax  ub-lb], 'FaceColor',[0 0.5 0.5], 'EdgeColor',[0 0.5 0.5]); 
+            rectangle('Position',[xlist(i)-deltax/2   lb  deltax  ub-lb], 'FaceColor',color, 'EdgeColor',color); 
             hold;
             
         elseif i == m
@@ -31,7 +33,7 @@ function plot_2dboxbald(min_list, max_list, deltax, xlist, bloat)
             arr = [v1,v2,v3,v4,v5,v6];
             lb = min(arr)*(1 - bloat);
             ub = max(arr)*(1 + bloat);
-            rectangle('Position',[xlist(i)-deltax/2   lb  deltax  ub-lb], 'FaceColor',[0 0.5 0.5], 'EdgeColor',[0 0.5 0.5]);
+            rectangle('Position',[xlist(i)-deltax/2   lb  deltax  ub-lb], 'FaceColor',color, 'EdgeColor',color);
             hold;
             
         else
@@ -53,7 +55,7 @@ function plot_2dboxbald(min_list, max_list, deltax, xlist, bloat)
             arr = [v1,v2,v3,v4,v5,v6];
             lb = min(arr)*(1 - bloat);
             ub = max(arr)*(1 + bloat);
-            rectangle('Position',[xlist(i)-deltax/2   lb  deltax  ub-lb], 'FaceColor',[0 0.5 0.5], 'EdgeColor',[0 0.5 0.5]);
+            rectangle('Position',[xlist(i)-deltax/2   lb  deltax  ub-lb], 'FaceColor',color, 'EdgeColor',color);
             hold;
         end
     end
