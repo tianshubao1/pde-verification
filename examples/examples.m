@@ -1,9 +1,4 @@
-function examples
-
-% ------- uncomment the code to run various examples  -------- %
-
-
-
+function sysofhypo
 %     deltat = 0.1;
 %     deltax = 1;    
 %     xrange = 10;
@@ -61,34 +56,10 @@ function examples
 
 %-------------------2d lin eq one side method reachable set---------------%
 
-
-
-
-
-
-%     time = 5/deltat + 1;
-%     numofmesh = xrange/deltax + 1;
-%     xlist = linspace(0, xrange, numofmesh);
-%     tlist = linspace(0, 5, time);
-%     bdcnd = 'Dirichlet';
-%     
-%     
-%     init_min = zeros(1, numofmesh);
-%     init_min(1 , 1: numofmesh/4) = 0.5;    
-%       
-%     init_max = zeros(1, numofmesh);
-%     init_max(1, 1: numofmesh/4 ) = 1;   
-
-
-
-
-
-
-
-%     deltat = 0.01;
-%     deltax = 0.01;
+%     deltat = 0.1;
+%     deltax = 1;
 %     alpha = 0.5;
-%     xrange = 10;
+%     xrange = 20;
 %     time = 5/deltat + 1;
 %     numofmesh = xrange/deltax + 1;   
 %     xlist = linspace(0, xrange, numofmesh);
@@ -97,13 +68,14 @@ function examples
 %     
 %     
 %     init_min = zeros(1, numofmesh);
-%     init_min(1 , 1: numofmesh/5) = 0.5;    
+%     init_min(1, 1: numofmesh/5) = 0.5;    
 %       
 %     init_max = zeros(1, numofmesh);
 %     init_max(1, 1: numofmesh/5 ) = 1;  
 %     
 %     
 %     [sol_min, sol_max] = reach_linhypo(alpha, deltat, deltax, init_min, init_max, time, xlist, tlist, bdcnd);
+
 
 % %----------------------------one side method 3dbox reachable set ------------------------------------
 % 
@@ -194,18 +166,31 @@ function examples
 % 
 %     plot_3dbox(min_matrix, max_matrix, deltax, deltat, xlist, tlist);
 
-%-------------------nonlin eq lax-wdf method reachable set-------------------------------------------------
-%     deltat = 0.1;
-%     deltax = 1;    
-%     xrange = 10;
-%     time = 61;    
-%     xlist = linspace(0, xrange, 11);
-%     tlist = linspace(0, 6, time);    
-%     bdcnd = 'Dirichlet';
-%     init_min = [0, 0, 0, 0, 0.5, 0.5, 0.5, 0.5, 0.5, 0, 0];    
-%     init_max = [0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0];
-%     [sol_min, sol_max] = reach_nonlnhypo(deltat, deltax, init_min, init_max, time, xlist, tlist, bdcnd);
+%-------------------nonlin eq lax-wdf method 2d and 3d reachable set-------------------------------------------------
+% 
+    deltat = 0.5;       % dont change this, use large time step
+    deltax = 1;    % delta x = 1, 2, 4
+    xrange = 100;
+    time = 5/deltat + 1;    % simluate from 0 to 5 seconds, too many optimizations will lead to over approximation
+    xlist = linspace(0, xrange, xrange/deltax + 1);
+    tlist = linspace(0, 5, time);    
+    bdcnd = 'Dirichlet';
     
+    m = xrange/deltax + 1;
+    init_min = zeros(1, m);
+    init_min(1, 1: m * 0.3) = 0.5;
+    init_max = zeros(1, m);
+    init_max(1, 1: m * 0.3) = 1;   
+    
+    figure;
+%     init_min = [0, 0, 0, 0, 0.5, 0.5, 0.5, 0.5, 0.5, 0, 0]; % deltax = 1
+%     init_max = [0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0];
+    
+%     init_min = [0, 0, 0, 0, 0.5, 0.5, 0.5, 0.5, 0.5, 0, 0]; 
+%     init_max = [0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0];   
+    [sol_min, sol_max] = reach_nonlnhypo(deltat, deltax, init_min', init_max', time, xlist, tlist, bdcnd);
+    plot_3dbox(sol_min', sol_max', deltax, deltat, xlist, tlist);
+    axis([-2 80 0 6])
 %-------------------nonlin eq lax-wdf method min_function-------------------------------------------------    
 %     deltat = 0.1;
 %     deltax = 1;    
@@ -215,7 +200,7 @@ function examples
 %     tlist = linspace(0, 3, time);    
 %     u_min = [0, 1.8, 0.9, 0.9, 0.9, 0, 0, 1, 1, 1.4, 0];  
 %     u_max = [0, 2.2, 1.2, 1.4, 1.5, 0, 0, 1.2, 1.2, 1.9, 0];     
-%     [list, umin] = min_nonlnhypo(u_min, u_max, deltat, deltax, xlist)
+%     [list, umin] = min_nonlnhypo_local(u_min, u_max, deltat, deltax, xlist)
 
 %-------------------nonlin eq lax-wdf method max_function-------------------------------------------------    
 %     deltat = 0.1;
@@ -226,7 +211,7 @@ function examples
 %     tlist = linspace(0, 3, time);    
 %     u_min = [0, 1.8, 0.9, 0.9, 0.9, 0, 0, 1, 1, 1.4, 0];  
 %     u_max = [0, 2.2, 1.2, 1.4, 1.5, 0, 0, 1.2, 1.2, 1.9, 0];   
-%     [list, umax] = max_nonlnhypo(u_min, u_max, deltat, deltax, xlist)
+%     [list, umax] = max_nonlnhypo_local(u_min, u_max, deltat, deltax, xlist)
 
 %----------------------------nonlin eq lax-wdf method method 2d and 3dbox plot------------------------------------   
 %  
@@ -276,28 +261,51 @@ function examples
 
 
 %-------------------------1d euler equations reachable set-----------------------------------
-
-%     deltat = 0.1;
-%     deltax = 1;    
-%     xrange = 10;
+% 
+%     deltat = 0.5;
+%     deltax = 5;    
+%     xrange = 50;
 %     gamma = 1.4;
-%     time = 51;    
-%     xlist = linspace(0, xrange, 11);
+%     time = 5/deltat + 1; 
+%     numofmesh = xrange/deltax + 1;
+% 
+%     xlist = linspace(0, xrange, numofmesh);
 %     tlist = linspace(0, 5, time);  
 % 
-%     init_min1 = [1, 1, 1, 1, 1, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7];
-%     init_min2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-%     init_min3 = [2.5, 2.5, 2.5, 2.5, 2.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5];
-%     
+% 
+%     init_min1 = zeros(1, numofmesh);
+%     init_min1(1 , 1: numofmesh/4) = 0.7;    
+%       
+%     init_max1 = zeros(1, numofmesh);
+%     init_max1(1, 1: numofmesh/4 ) = 1;
+% 
+%     init_min2 = zeros(1, numofmesh);
+%     init_min2(1 , 1: numofmesh/4) = 0;    
+%       
+%     init_max2 = zeros(1, numofmesh);
+%     init_max2(1, 1: numofmesh/4 ) = 0.5;
+% 
+%     init_min3 = zeros(1, numofmesh);
+%     init_min3(1 , 1: numofmesh/4) = 1.5;    
+%       
+%     init_max3 = zeros(1, numofmesh);
+%     init_max3(1, 1: numofmesh/4 ) = 2.5;
+% 
+% 
+% %     init_min1 = [1, 1, 1, 1, 1, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7];
+% %     init_min2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+% %     init_min3 = [2.5, 2.5, 2.5, 2.5, 2.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5];
+% %     
 %     init_min = [init_min1; init_min2; init_min3];
-%     
-%     init_max1 = [0.5, 0.5, 0.5, 0.5, 0.5, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3];
-%     init_max2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-%     init_max3 = [1.5, 1.5, 1.5, 1.5, 1.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5];
-%     
+% %     
+% %     init_max1 = [0.5, 0.5, 0.5, 0.5, 0.5, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3];
+% %     init_max2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+% %     init_max3 = [1.5, 1.5, 1.5, 1.5, 1.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5];
+% %     
 %     init_max = [init_max1; init_max2; init_max3];
-%     
+% %     
 %     reach_sys_nonlnhypo(gamma, deltat, deltax, init_min, init_max, time, xlist, tlist);
+   
 
 
 %-------------------euler eqs min, max function-------------------------------------------------    
@@ -328,29 +336,55 @@ function examples
 %     disp(list);
 
 %-------------------euler eqs reachable sets-------------------------------------------------    
-%     deltat = 0.1;
+%     deltat = 1;
 %     deltax = 1;    
 %     xrange = 10;
-%     time = 61;
-%     xlist = linspace(0, xrange, 11);
+%     time = 5/deltat + 1;
+%     xlist = linspace(0, xrange, xrange/deltax + 1);
 %     gamma = 1.4;
-%     tlist = linspace(0, 6, time);  
+%     tlist = linspace(0, 5, 5/deltat + 1);  
+%     numofmesh = xrange/deltax + 1;
 %     
 %     
+% %     init_min1 = zeros(1, numofmesh);
+% %     init_min1(1 , 1: int8(numofmesh/2)) = 0.7;    
+% %       
+% %     init_max1 = zeros(1, numofmesh);
+% %     init_max1(1, 1: int8(numofmesh/2) ) = 1;
+% % 
+% %     init_min2 = zeros(1, numofmesh);
+% %     init_min2(1 , 1: int8(numofmesh/2)) = 0;    
+% %       
+% %     init_max2 = zeros(1, numofmesh);
+% %     init_max2(1, 1: int8(numofmesh/2) ) = 0.5;
+% % 
+% %     init_min3 = zeros(1, numofmesh);
+% %     init_min3(1 , 1: int8(numofmesh/2)) = 1.5;    
+% %       
+% %     init_max3 = zeros(1, numofmesh);
+% %     init_max3(1, 1: int8(numofmesh/2) ) = 2.5;
+% 
 %     init_min1 = [0.5, 0.5, 0.5, 0.5, 0.5, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3];
 %     init_min2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 %     init_min3 = [1.5, 1.5, 1.5, 1.5, 1.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5];  
-%     
+% 
+% %     init_min1 = [0.5, 0.5, 0.5, 0.5, 0.5, 0.3 ];
+% %     init_min2 = [0, 0, 0, 0, 0, 0, ];
+% %     init_min3 = [1.5, 1.5, 1.5, 1.5, 1.5, 0.5];      
 %     init_min = [init_min1; init_min2; init_min3];   
 %     
-%     init_max1 = [1, 1, 1, 1, 1, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7];
+%     init_max1 = [1, 1, 1, 1, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7];
 %     init_max2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 %     init_max3 = [2.5, 2.5, 2.5, 2.5, 2.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5];
-%     
+% %     
+% %     init_max1 = [1, 1, 1, 1, 0.7, 0.7];
+% %     init_max2 = [0, 0, 0, 0, 0, 0];
+% %     init_max3 = [2.5, 2.5, 2.5, 2.5, 2.5, 1.5];    
 %     init_max = [init_max1; init_max2; init_max3]; 
-%     tic
+%     disp(init_min);
+%     disp(init_max);
 %     reach_sys_nonlnhypo(gamma, deltat, deltax, init_min, init_max, time, xlist, tlist);
-%     toc
+
 
 %-------------------------solve boundary control problem-------------------------------------------  
 %     deltat = 0.1;
@@ -397,29 +431,29 @@ function examples
     
 %-------------------------reach 1d heat eq using gminres and tradiagonal method------------------------------------------- 
 
-    deltat = 0.1;
-    deltax = 0.01/8;    
-    
-%     xrange = 10;
-    xrange = 9;
-    
-    trange = 10;
-    time = trange/deltat + 1;
-    space = xrange/deltax + 1;
-    
-    xlist = linspace(0, xrange, xrange/deltax + 1);
-    tlist = linspace(0, trange, trange/deltat + 1);     
-    init_min = zeros(space,1);
-        
-    init_min(20:60) = 0.5;
-    lambda_min = 0.1;
-    lambda_max = 0.2;
-    
-    init_max = zeros(space,1);
-    
-    init_max(20:60) = 1;  
-    
-    reach_implicit_1d(deltat, deltax, init_min, init_max, lambda_min, lambda_max, time, xlist, tlist);    
+%     deltat = 0.1;
+%     deltax = 0.01/8;    
+%     
+% %     xrange = 10;
+%     xrange = 9;
+%     
+%     trange = 10;
+%     time = trange/deltat + 1;
+%     space = xrange/deltax + 1;
+%     
+%     xlist = linspace(0, xrange, xrange/deltax + 1);
+%     tlist = linspace(0, trange, trange/deltat + 1);     
+%     init_min = zeros(space,1);
+%         
+%     init_min(20:60) = 0.5;
+%     lambda_min = 0.1;
+%     lambda_max = 0.2;
+%     
+%     init_max = zeros(space,1);
+%     
+%     init_max(20:60) = 1;  
+%     
+%     reach_implicit_1d(deltat, deltax, init_min, init_max, lambda_min, lambda_max, time, xlist, tlist);    
 
 %-------------------------solve 2d heat eq using CN and gminres ------------------------------------------- 
 
