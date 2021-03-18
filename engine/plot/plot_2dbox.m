@@ -1,4 +1,5 @@
-function plot_2dbox(min_list, max_list, sample_list1, deltax, xlist)
+% function plot_2dbox(min_list, max_list, sample_list1, deltax, xlist)
+function plot_2dbox(min_list, max_list, deltax, xlist)
     m = size(xlist);
     m = m(2);
     figure;
@@ -50,8 +51,8 @@ function plot_2dbox(min_list, max_list, sample_list1, deltax, xlist)
     end
     
 %------plot interior trajectories---------------------%    
-    hold on; 
-    plot(xlist, sample_list1, 'black');
+%     hold on; 
+%     plot(xlist, sample_list1, 'black');
 %     hold on;    
 %     plot(xlist, sample_list2, 'black');
 %     hold on;
