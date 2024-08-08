@@ -8,7 +8,7 @@ function plot_3dbox(min_matrix, max_matrix, deltax, deltat, xlist, tlist)
     title('3-Dimension Reachable Sets')
     xlabel('Distance x')
     ylabel('Time t')
-    zlabel('u(x, t)')
+%     zlabel('u(x, t)')
                 
     for j = 1 : n     %t direction
         for i = 1 : m   %x direction

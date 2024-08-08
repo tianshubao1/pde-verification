@@ -1,10 +1,10 @@
 function plot_2dboxcolor(min_list, max_list, deltax, xlist, bloat, color)
     m = size(xlist);
     m = m(2);
-%     figure;
-    title('2-Dimension Reachable Sets at t = 4s')
+    figure;
+    title('Bloated Continuous Reachable Sets at t = 4s')
     xlabel('Distance x')
-    ylabel('u(x,4)')
+
     
     if isempty(color)
         color = [0 0.5 0.5];
@@ -37,12 +37,6 @@ function plot_2dboxcolor(min_list, max_list, deltax, xlist, bloat, color)
             hold;
             
         else
-%             v1 = (min_list(i - 1) + min_list(i))/2;
-%             v2 = (max_list(i - 1) + max_list(i))/2;
-%             v3 = min_list(i);
-%             v4 = max_list(i);
-%             v5 = (min_list(i) + min_list(i + 1))/2;
-%             v6 = (max_list(i) + max_list(i + 1))/2;
             
             v1 = min_list(i - 1);
             v2 = max_list(i - 1);
