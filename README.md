@@ -14,7 +14,7 @@ Tool installation
 
 1) Step 1: install https://www.mathworks.com/products/matlab.html
 
-2) Step 2: Go to Examples folder and run examples.m, nonlinear_system.m, nonlinear_system_global.m
+2) Step 2: Go to Examples folder and run examples.m, nonlinear_system.m, nonlinear_system_global.m, 
            add the folder to path when execute.
 
   
