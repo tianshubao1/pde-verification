@@ -1,14 +1,15 @@
+
 function sysofhypo
-%     deltat = 0.1;
-%     deltax = 1;    
-%     xrange = 10;
-%     alpha = 0.5;
-%     time = 51;    
-%     xlist = linspace(0, xrange, 11);
-%     tlist = linspace(0, 5, time);     
-%     init = [0, 0, 0, 0, 1.5, 1.5, 1.5, 0, 0, 0, 0];
-%     bdcnd = 'Neumann';
-%     sol = solve_hypo(alpha, deltat, deltax, init, time, xlist, tlist, bdcnd);
+    deltat = 0.1;
+    deltax = 1;    
+    xrange = 10;
+    alpha = 0.5;
+    time = 51;    
+    xlist = linspace(0, xrange, 11);
+    tlist = linspace(0, 5, time);     
+    init = [0, 0, 0, 0, 1.5, 1.5, 1.5, 0, 0, 0, 0];
+    bdcnd = 'Neumann';
+    sol = solve_hypo(alpha, deltat, deltax, init, time, xlist, tlist, bdcnd);
     
 %-------------------------solve lin sys using lax-frdch method-------------------------------------------     
 
@@ -215,10 +216,6 @@ function sysofhypo
 
 %----------------------------nonlin eq lax-wdf method method 2d and 3dbox plot------------------------------------   
 %  
-
-
-
-
 % 
 %     deltat = 0.1;
 %     deltax = 1;    
@@ -489,58 +486,58 @@ function sysofhypo
     
 %-------------------------reach 2d heat eq using CN and gminres ------------------------------------------- 
 
-    deltat = 0.1;
-    deltax = 0.4;  
-    deltay = 0.4;
-    xrange = 10;
-    yrange = 10;    
-    trange = 10;
-    alpha = 0.5;
-    time = trange/deltat; 
-    nummesh = xrange/deltax + 1;
-    xlist = linspace(0, xrange, nummesh);
-    ylist = linspace(0, yrange, nummesh);    
-    tlist = linspace(0, trange, time);   
-    
-    
-    
-    init_min = zeros(nummesh * nummesh, 1);
-        
-    for i = 1 : nummesh
-        for j = 1 : nummesh
-            
-            if(i >= nummesh/4 && i <= nummesh/4*3 && ...
-                j >= nummesh/4 && j <= nummesh/4*3)
-            
-                init_min((i - 1) * nummesh + j) = 1;
-            else
-                init_min((i - 1) * nummesh + j) = 0;
-            end
-        end
-    end
-
-    
-    
-    
-    init_max = zeros(nummesh * nummesh, 1);
-        
-    for i = 1 : nummesh
-        for j = 1 : nummesh
-            
-            if(i >= nummesh/4 && i <= nummesh/4*3 && ...
-                j >= nummesh/4 && j <= nummesh/4*3)
-            
-                init_max((i - 1) * nummesh + j) = 1.5;
-            else
-                init_max((i - 1) * nummesh + j) = 0.5;
-            end
-        end
-    end
-    
-    lambda_min = 0.1;  
-    lambda_max = 0.2; 
-    
-    reach_3d_CN_2dheat(deltat, deltax, deltay, lambda_min, lambda_max, alpha, init_min, init_max, time, xlist, ylist, tlist);
+%     deltat = 0.1;
+%     deltax = 0.4;  
+%     deltay = 0.4;
+%     xrange = 10;
+%     yrange = 10;    
+%     trange = 10;
+%     alpha = 0.5;
+%     time = trange/deltat; 
+%     nummesh = xrange/deltax + 1;
+%     xlist = linspace(0, xrange, nummesh);
+%     ylist = linspace(0, yrange, nummesh);    
+%     tlist = linspace(0, trange, time);   
+%     
+%     
+%     
+%     init_min = zeros(nummesh * nummesh, 1);
+%         
+%     for i = 1 : nummesh
+%         for j = 1 : nummesh
+%             
+%             if(i >= nummesh/4 && i <= nummesh/4*3 && ...
+%                 j >= nummesh/4 && j <= nummesh/4*3)
+%             
+%                 init_min((i - 1) * nummesh + j) = 1;
+%             else
+%                 init_min((i - 1) * nummesh + j) = 0;
+%             end
+%         end
+%     end
+% 
+%     
+%     
+%     
+%     init_max = zeros(nummesh * nummesh, 1);
+%         
+%     for i = 1 : nummesh
+%         for j = 1 : nummesh
+%             
+%             if(i >= nummesh/4 && i <= nummesh/4*3 && ...
+%                 j >= nummesh/4 && j <= nummesh/4*3)
+%             
+%                 init_max((i - 1) * nummesh + j) = 1.5;
+%             else
+%                 init_max((i - 1) * nummesh + j) = 0.5;
+%             end
+%         end
+%     end
+%     
+%     lambda_min = 0.1;  
+%     lambda_max = 0.2; 
+%     
+%     reach_3d_CN_2dheat(deltat, deltax, deltay, lambda_min, lambda_max, alpha, init_min, init_max, time, xlist, ylist, tlist);
 
 %-------------------------solve 2d heat eq using ADI, tridiagonal ------------------------------------------- 
 
