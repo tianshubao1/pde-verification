@@ -1,4 +1,4 @@
-function minlist = min_nonlnhypo_local(u_min, u_max, deltat, deltax, xlist, h_min, h_max)
+function minlist = min_nonlnhypo_global(u_min, u_max, deltat, deltax, xlist, h_min, h_max)
 
     dx = deltax;
     dt = deltat;
@@ -33,24 +33,49 @@ function minlist = min_nonlnhypo_local(u_min, u_max, deltat, deltax, xlist, h_mi
         h2 = str2sym(str_5);        %h_2
         h3 = str2sym(str_6);        %h_3
         
-        u = [k1, k2, k3, h1, h2, h3]; 
+%         u = [k1, k2, k3, h1, h2, h3]; 
 
-
+        if j == 2
+            u1 = [k1, k2, k3];
+            u2 = [h1, h2, h3]; 
+        else
+            u1 = [u1, k3];
+            u2 = [u2, h3];
+        end
         
         u_1 = (k1 + k2)/2 - dt/(2 * dx) * (fun(k2) - fun(k1)) + dt/2* (h1 + h2)/2;  %u_-1/2
         u_2 = (k2 + k3)/2 - dt/(2 * dx) * (fun(k3) - fun(k2)) + dt/2* (h2 + h3)/2;  %u_+1/2
-        tgt = k2 - dt/dx * (fun(u_2) - fun(u_1))+ dt*h2;
-        
-        ht = matlabFunction(tgt,'vars',{u});        
-        lb = [u_min(j - 1), u_min(j), u_min(j + 1), h_min(j - 1), h_min(j), h_min(j + 1)];
-        ub = [u_max(j - 1), u_max(j), u_max(j + 1), h_max(j - 1), h_max(j), h_max(j + 1)];
-        x0 = (lb + ub)/2;
-        [~, fmin] = fmincon(ht, x0,[],[],[],[], lb, ub);
-        minlist(j) = fmin;
+        tgt_new = k2 - dt/dx * (fun(u_2) - fun(u_1))+ dt*h2;
+        tgt = tgt_new^2 + tgt;
+
         
     end        
+    
+    
+    u = [u1, u2];       %[1, 42]
+    ht = matlabFunction(tgt,'vars',{u});        
+    lb = [u_min, h_min'];
+    ub = [u_max, h_max'];
+    x0 = (lb + ub)/2;
+    [list, fmin] = fmincon(ht, x0,[],[],[],[], lb, ub);
+    minlist(j) = fmin;     
+
+    for j = 2 : m - 1   %calculate value for next step
         
-     
+        minlist(1) = 0;
+        minlist(m) = 0;
+        
+        k1 = list(j - 1);
+        k2 = list(j);        
+        k3 = list(j + 1);
+        h2 = list(j + m -1);
+        
+        
+        u_1 = (k3 + k2)/2 - dt/(2 * dx) * (fun(k3) - fun(k2));  %u_+1/2
+        u_2 = (k2 + k1)/2 - dt/(2 * dx) * (fun(k2) - fun(k1));  %u_-1/2
 
-
+        minlist(j) = k2 - dt/dx * (fun(u_1) - fun(u_2))+ dt*h2;     %f(u_i+1/2)-f(u_i-1/2)    
+        
+    end       
+    
 end

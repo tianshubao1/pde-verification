@@ -1,17 +1,17 @@
-function [sol_min, sol_max] = reach_linhypo(alpha, deltat, deltax, init_min, init_max, time, xlist, tlist, bdcnd)
+function [sol_min, sol_max] = reach_linhypo(alpha, deltat, deltax, init_min, init_max, time, xlist, tlist, bdcnd, h_min, h_max)
 
 
-    sol_min = solve_hypo(alpha, deltat, deltax, init_min, time, xlist, tlist, bdcnd);
-    sol_max = solve_hypo(alpha, deltat, deltax, init_max, time, xlist, tlist, bdcnd);
-    true_value = [0, 0, 0, 0, 0, 0, 0.6, 0.6, 0.6, 0.6, 0]; 
+    sol_min = solve_hypo(alpha, deltat, deltax, init_min, time, xlist, tlist, bdcnd, h_min);
+    sol_max = solve_hypo(alpha, deltat, deltax, init_max, time, xlist, tlist, bdcnd, h_max);
+%     true_value = [0, 0, 0, 0, 0, 0, 0.6, 0.6, 0.6, 0.6, 0]; 
     
     
 %--------annotation for linear eq at t = 4s------------------%  
-    plot_2dboxbald(sol_min(:,4/deltat + 1), sol_max(:,4/deltat + 1), deltax, xlist, 0);   
-    hold on;
-    rectangle('Position',[2   0.5  4  0.5]); 
-%     t = text(4, 0.73,'Unsafe region');
-    hold on;
+%     plot_2dboxbald(sol_min(:,4/deltat + 1), sol_max(:,4/deltat + 1), deltax, xlist, 0);   
+%     hold on;
+%     rectangle('Position',[2   0.5  4  0.5]); 
+% %     t = text(4, 0.73,'Unsafe region');
+%     hold on;
     
     
 %--------annotation for linear eq------------------%    

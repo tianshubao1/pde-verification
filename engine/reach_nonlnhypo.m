@@ -1,44 +1,56 @@
-function [sol_min, sol_max] = reach_nonlnhypo(deltat, deltax, init_min, init_max, time, xlist, tlist, bdcnd)
+function [sol_min, sol_max] = reach_nonlnhypo(deltat, deltax, init_min, init_max, time, xlist, tlist, bdcnd, h_min, h_max)
 
 u_min = init_min;
 u_max = init_max;
-sol_min = zeros(length(xlist),length(tlist));
+sol_min = zeros(length(xlist),length(tlist));   %[11, 51] [x, t]
 sol_max = zeros(length(xlist),length(tlist));
 
 size(sol_min);
-sol_min(:,1) = init_min; %auto adjusting, 行列不重要
+sol_min(:,1) = init_min; %[x, t]
 sol_max(:,1) = init_max;
 
 mesh = size(xlist);
 m = mesh(2);    %interior mesh points
-% disp(m);
-u_min_new = zeros(size(init_min));
-u_max_new = zeros(size(init_min));
 
+h_min = h_min';
+h_max = h_max';
 
     function f = fun(x) %flux function
         f = 1/2 * x * x;
     end
 
-
-% sol_min = solve_nonlnhypo(deltat, deltax, init_min, time, xlist, tlist, bdcnd);
-% sol_max = solve_nonlnhypo(deltat, deltax, init_max, time, xlist, tlist, bdcnd);
-
-
 for i = 1 : time - 1    
-
-    u_min_new = min_nonlnhypo_local(u_min, u_max, deltat, deltax, xlist);
     
-    if strcmp(bdcnd,'Dirichlet')    
-        u_min_new(1) = 0;
-        u_min_new(m) = 0;
-    end    
-    u_max_new = max_nonlnhypo_local(u_min, u_max, deltat, deltax, xlist);
+    h_mincurr = min(h_min(:, i), h_max(:, i));  %[x, t]
+    h_maxcurr = max(h_min(:, i), h_max(:, i));
+    u_min1= u_min;
+    u_max1 = u_max;
+    u_min = min(u_min1, u_max1); 
+    u_max = max(u_min1, u_max1); 
+    
+%     u_min_new = min_nonlnhypo_local(u_min, u_max, deltat, deltax, xlist, h_mincurr, h_maxcurr);   % local optmization   
+%     u_max_new = max_nonlnhypo_local(u_min, u_max, deltat, deltax, xlist, h_mincurr, h_maxcurr);
+    u_min_new = min_nonlnhypo_global(u_min, u_max, deltat, deltax, xlist, h_mincurr, h_maxcurr);   % whole layer optmization 
+    u_max_new = max_nonlnhypo_global(u_min, u_max, deltat, deltax, xlist, h_mincurr, h_maxcurr);
     
     if strcmp(bdcnd,'Dirichlet')    
         u_max_new(1) = 0;
         u_max_new(m) = 0;
     end
+    if strcmp(bdcnd,'Dirichlet')    
+        u_min_new(1) = 0;
+        u_min_new(m) = 0;
+    end 
+    
+    sol_min(:,i + 1) = u_min_new;
+    sol_max(:,i + 1) = u_max_new;
+    
+    u_min = u_min_new;
+    u_max = u_max_new;
+    
+ 
+end
+
     
 %     for j = 2 : m - 1       %for the purpose of soundness, adding max and min value at each step
 %         if u_min_new(j) > sol_min(j, i + 1)
@@ -49,15 +61,8 @@ for i = 1 : time - 1
 %             u_max_new(j) = sol_max(j, i + 1);
 %         end
 %     end
-    
-    sol_min(:,i + 1) = u_min_new;
-    sol_max(:,i + 1) = u_max_new;
-    
-    u_min = u_min_new;
-    u_max = u_max_new;
-    
- 
-end
+
+
 % sol_min = sol_min';
 % sol_max = sol_max';
 
@@ -66,7 +71,7 @@ end
 % sol_sample3 = solve_nonlnhypo(deltat, deltax, (init_max - init_min)/3 * 2 + init_min, time, xlist, tlist, bdcnd);
 
 
-plot_2dboxbald(sol_min(:,4/deltat + 1)', sol_max(:,4/deltat + 1)', deltax, xlist, 0); % plot t = 4s
+% plot_2dboxbald(sol_min(:,4/deltat + 1)', sol_max(:,4/deltat + 1)', deltax, xlist, 0); % plot t = 4s
 
 % hold on;
 % rectangle('Position',[2   0.5  2.3  0.5], 'FaceColor',[0 0 1], 'EdgeColor',[0 0 1]); 

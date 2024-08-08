@@ -1,4 +1,5 @@
 function [minlist, fmin] = min_nonlnhypo(u_min, u_max, deltat, deltax, xlist)
+%ingnore this
 
     dx = deltax;
     dt = deltat;

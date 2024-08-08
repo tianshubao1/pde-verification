@@ -1,6 +1,8 @@
-function sol = solve_hypo(alpha, deltat, deltax, init, time, xlist, tlist, bdcnd)
+function sol = solve_hypo(alpha, deltat, deltax, init, time, xlist, tlist, bdcnd, h_func)
 %one side scheme
-%     if bdcnd == 'Dirichlet' 
+% set input function = sqrt(2)*exp(-x-t)
+
+
     if strcmp(bdcnd,'Dirichlet')
         u = init;
         sol = zeros(length(xlist),length(tlist));
@@ -8,10 +10,12 @@ function sol = solve_hypo(alpha, deltat, deltax, init, time, xlist, tlist, bdcnd
         size2 = size(xlist);
         m = size2(2);
         sol(:,1) = init;
+        
         if alpha > 0
             for i = 1 : time
                 %disp(size(u));
                 u = u - deltat/deltax*alpha*(u - [0, u(1:(length(u) - 1))]);
+                u = u + deltat*h_func(i,:);
                 u(1) = 0;
                 u(m) = 0;
                 sol(:,i) = u;    
@@ -21,6 +25,7 @@ function sol = solve_hypo(alpha, deltat, deltax, init, time, xlist, tlist, bdcnd
         if alpha < 0
             for i = 1 : time
                 u = u - deltat/deltax*alpha*([u(2:length(u)),0] - u);
+                u = u + deltat*h_func(i,:);
                 u(1) = 0;
                 u(m) = 0;            
                 sol(:,i) = u;    
@@ -28,7 +33,6 @@ function sol = solve_hypo(alpha, deltat, deltax, init, time, xlist, tlist, bdcnd
         end
         
         
-%     elseif bdcnd == 'Neumann'
 
     elseif strcmp(bdcnd,'Neumann')        
         u = init;
@@ -57,7 +61,6 @@ function sol = solve_hypo(alpha, deltat, deltax, init, time, xlist, tlist, bdcnd
         end
         
         
-%     elseif bdcnd == 'Robin'
     elseif strcmp(bdcnd,'Robin')          
         u = init;
         sol = zeros(length(xlist),length(tlist));
