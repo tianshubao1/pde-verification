@@ -1,5 +1,6 @@
 function [minlist, fmin] = min_sys_nonlnhypo(u_min, u_max, deltat, deltax, xlist, gamma, h_min, h_max)
 %     disp(size(h_min))         %[11, 1]
+    nu = 0.01;
     dx = deltax;
     dt = deltat;
     mesh = size(xlist);
@@ -73,9 +74,9 @@ function [minlist, fmin] = min_sys_nonlnhypo(u_min, u_max, deltat, deltax, xlist
             u_1 = (k2 + k1)/2 - dt/(2 * dx) * (fun(k2(1), k2(2), k2(3), gamma) - fun(k1(1), k1(2), k1(3), gamma)) + dt/2* ([h1 + h2; 0; 0])/2;  %u_-1/2
             u_2 = (k3 + k2)/2 - dt/(2 * dx) * (fun(k3(1), k3(2), k3(3), gamma) - fun(k2(1), k2(2), k2(3), gamma)) + dt/2* ([h2 + h3; 0; 0])/2;  %u_+1/2     3*1 vector
             tgt = k2 - dt/dx * (fun(u_2(1), u_2(2), u_2(3), gamma) - fun(u_1(1), u_1(2), u_1(3), gamma))+ dt*[h2; 0; 0];     %f(u_i+1/2)-f(u_i-1/2)    3*1 vector
-            
-%             tgt = k2 - dt/(2*dx) * (fun(k3(1), k3(2), k3(3), gamma) - fun(k1(1), k1(2), k1(3), gamma))+ dt*[h2; 0; 0];
-%             tgt = tgt_new + tgt;
+            %add artificial viscosity
+            tgt = tgt + nu*dt/(dx*dx) * [0; k1(1) + k3(1) - 2*k2(1); k1(1) + k3(1) - 2*k2(1) ];
+
             
             ht_1 = matlabFunction(tgt(1),'vars',{u});
             ht_2 = matlabFunction(tgt(2),'vars',{u});

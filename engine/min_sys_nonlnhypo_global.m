@@ -1,5 +1,6 @@
 function [minlist, fmin] = min_sys_nonlnhypo_global(u_min, u_max, deltat, deltax, xlist, gamma, h_min, h_max)
 %     disp(size(h_min))         %[11, 1]
+    nu = 0.01;
     dx = deltax;
     dt = deltat;
     mesh = size(xlist);
@@ -132,15 +133,12 @@ function [minlist, fmin] = min_sys_nonlnhypo_global(u_min, u_max, deltat, deltax
             if(result(i) <= 0)
                 result(i) = 0.01;
             end
-%             disp(result);
-%             minlist(i,j) = result(i);
-%             disp(result);
-            minlist(:,j) = result;
+
+            %add artificial viscosity            
+            minlist(:,j) = result + nu*dt/(dx*dx) * [0; k1(1) + k3(1) - 2*k2(1); k1(1) + k3(1) - 2*k2(1) ];
+%             minlist(:,j) = result;
             
-%             u_1 = (k3 + k2)/2 - dt/(2 * dx) * (fun(k3) - fun(k2));  %u_+1/2
-%             u_2 = (k2 + k1)/2 - dt/(2 * dx) * (fun(k2) - fun(k1));  %u_-1/2
-%             minlist(j) = k2 - dt/dx * (fun(u_1) - fun(u_2))+ dt*h2;     %f(u_i+1/2)-f(u_i-1/2)    
-        
+
         end         
         
     end

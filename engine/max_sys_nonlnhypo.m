@@ -1,5 +1,5 @@
 function [maxlist, fmin] = max_sys_nonlnhypo(u_min, u_max, deltat, deltax, xlist, gamma, h_min, h_max)
-
+    nu = 0.01;
     dx = deltax;
     dt = deltat;
     mesh = size(xlist);
@@ -70,7 +70,8 @@ function [maxlist, fmin] = max_sys_nonlnhypo(u_min, u_max, deltat, deltax, xlist
 
             tgt = k2 - dt/dx * (fun(u_2(1), u_2(2), u_2(3), gamma) - fun(u_1(1), u_1(2), u_1(3), gamma))+ dt*[h2; 0; 0];     %f(u_i+1/2)-f(u_i-1/2)    3*1 vector
 
-%             tgt = tgt_new + tgt;
+            %add artificial viscosity
+            tgt = tgt + nu*dt/(dx*dx) * [0; k1(1) + k3(1) - 2*k2(1); k1(1) + k3(1) - 2*k2(1) ];
 
             tgt = -tgt;
                 %solve 3 optimization problems at each stage

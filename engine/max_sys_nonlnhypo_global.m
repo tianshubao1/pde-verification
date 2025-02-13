@@ -1,5 +1,5 @@
 function [maxlist, fmin] = max_sys_nonlnhypo_global(u_min, u_max, deltat, deltax, xlist, gamma, h_min, h_max)
-
+    nu = 0.01;
     dx = deltax;
     dt = deltat;
     mesh = size(xlist);
@@ -109,7 +109,7 @@ function [maxlist, fmin] = max_sys_nonlnhypo_global(u_min, u_max, deltat, deltax
             
         
         
-    for i = 1 : 3    % for 3 variables, pick minimum for them seperately
+    for i = 1 : 3    
         for j = 2 : m - 1   %calculate value for next step
 
             maxlist(1) = 0;     %[3, m]
@@ -133,7 +133,10 @@ function [maxlist, fmin] = max_sys_nonlnhypo_global(u_min, u_max, deltat, deltax
                 result(i) = 0.02;
             end
             
-            maxlist(i,j) = result(i);
+%             maxlist(i,j) = result(i);
+
+            %add artificial viscosity            
+            maxlist(:,j) = result + nu*dt/(dx*dx) * [0; k1(1) + k3(1) - 2*k2(1); k1(1) + k3(1) - 2*k2(1) ];            
 %             maxlist(:,j) = result;
             
 
